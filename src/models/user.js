@@ -10,6 +10,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       //dùng để định danh các mối quan hệ
       // define association here
+      User.belongsTo(models.Allcode, {
+        foreignKey: "positionId",
+        targetKey: "keyMap",
+        as: "positionData",
+      });
+      User.belongsTo(models.Allcode, {
+        foreignKey: "gender",
+        targetKey: "keyMap",
+        as: "genderData",
+      });
     }
   }
   User.init(
