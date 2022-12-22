@@ -11,9 +11,9 @@ module.exports = {
       contentHTML: { allowNull: false, type: Sequelize.TEXT("long") },
       contentMarkdown: { allowNull: false, type: Sequelize.TEXT("long") },
       description: { allowNull: true, type: Sequelize.TEXT("long") },
-      doctorId: { allowNull: false, type: Sequelize.INTEGER },
-      specialtyId: { allowNull: false, type: Sequelize.INTEGER },
-      clinicId: { allowNull: false, type: Sequelize.INTEGER },
+      doctorId: { allowNull: true, type: Sequelize.INTEGER },
+      specialtyId: { allowNull: true, type: Sequelize.INTEGER },
+      clinicId: { allowNull: true, type: Sequelize.INTEGER },
 
       createdAt: {
         allowNull: false,
