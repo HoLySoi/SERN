@@ -29,8 +29,8 @@ let getAllHandbook = async (req, res) => {
 let getDetailHandbookById = async (req, res) => {
   try {
     let infor = await handbookService.getDetailHandbookById(
-      req.query.id,
-      req.query.location
+      req.query.id
+      // req.query.location
     );
     return res.status(200).json(infor);
   } catch (error) {
@@ -42,8 +42,21 @@ let getDetailHandbookById = async (req, res) => {
   }
 };
 
+let handleDeleteHandbook = async (req, res) => {
+  if (!req.body.id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "missing required parameters!",
+    });
+  }
+
+  let message = await handbookService.deleteHandbook(req.body.id);
+  return res.status(200).json(message);
+};
+
 module.exports = {
   createHandbook: createHandbook,
   getAllHandbook: getAllHandbook,
   getDetailHandbookById: getDetailHandbookById,
+  handleDeleteHandbook: handleDeleteHandbook,
 };

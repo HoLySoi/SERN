@@ -95,8 +95,30 @@ let getDetailHandbookById = (inputId) => {
   });
 };
 
+let deleteHandbook = (handbookId) => {
+  return new Promise(async (resolve, reject) => {
+    let foundHandbook = await db.Handbook.findOne({
+      where: { id: handbookId },
+    });
+    if (!foundHandbook) {
+      resolve({
+        errCode: 2,
+        errMessage: "the handbook is not exist",
+      });
+    }
+
+    await db.Handbook.destroy({
+      where: { id: handbookId },
+    });
+    resolve({
+      errCode: 0,
+      errMessage: "the handbook is deleted",
+    });
+  });
+};
 module.exports = {
   createHandbook: createHandbook,
   getAllHandbook: getAllHandbook,
   getDetailHandbookById: getDetailHandbookById,
+  deleteHandbook: deleteHandbook,
 };

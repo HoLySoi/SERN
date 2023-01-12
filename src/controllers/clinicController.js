@@ -42,8 +42,21 @@ let getDetailClinicById = async (req, res) => {
   }
 };
 
+let handleDeleteClinic = async (req, res) => {
+  if (!req.body.id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "missing required parameters!",
+    });
+  }
+
+  let message = await clinicService.deleteClinic(req.body.id);
+  return res.status(200).json(message);
+};
+
 module.exports = {
   createClinic: createClinic,
   getAllClinic: getAllClinic,
   getDetailClinicById: getDetailClinicById,
+  handleDeleteClinic: handleDeleteClinic,
 };

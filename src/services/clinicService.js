@@ -98,8 +98,31 @@ let getDetailClinicById = (inputId) => {
   });
 };
 
+let deleteClinic = (clinicId) => {
+  return new Promise(async (resolve, reject) => {
+    let foundClinic = await db.Clinic.findOne({
+      where: { id: clinicId },
+    });
+    if (!foundClinic) {
+      resolve({
+        errCode: 2,
+        errMessage: "the clinic is not exist",
+      });
+    }
+
+    await db.Clinic.destroy({
+      where: { id: clinicId },
+    });
+    resolve({
+      errCode: 0,
+      errMessage: "the clinic is deleted",
+    });
+  });
+};
+
 module.exports = {
   createClinic: createClinic,
   getAllClinic: getAllClinic,
   getDetailClinicById: getDetailClinicById,
+  deleteClinic: deleteClinic,
 };

@@ -42,8 +42,21 @@ let getDetailSpecialtyById = async (req, res) => {
   }
 };
 
+let handleDeleteSpecialty = async (req, res) => {
+  if (!req.body.id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "missing required parameters!",
+    });
+  }
+
+  let message = await specialtyService.deleteSpecialty(req.body.id);
+  return res.status(200).json(message);
+};
+
 module.exports = {
   createSpecialty: createSpecialty,
   getAllSpecialty: getAllSpecialty,
   getDetailSpecialtyById: getDetailSpecialtyById,
+  handleDeleteSpecialty: handleDeleteSpecialty,
 };
