@@ -52,10 +52,10 @@ let getAllHandbook = () => {
   });
 };
 
-let getDetailHandbookById = (inputId, location) => {
+let getDetailHandbookById = (inputId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!inputId || !location) {
+      if (!inputId) {
         resolve({
           errCode: 1,
           errMessage: "Missing parameter",
@@ -65,25 +65,22 @@ let getDetailHandbookById = (inputId, location) => {
           where: {
             id: inputId,
           },
-          attributes: ["descriptionHTML", "descriptionMarkdown"],
+          attributes: [
+            "name",
+            "address",
+            "descriptionHTML",
+            "descriptionMarkdown",
+          ],
         });
         if (data) {
           let doctorHandbook = [];
-          if (location === "ALL") {
-            doctorHandbook = await db.Doctor_Infor.findAll({
-              where: { handbookId: inputId },
-              attributes: ["doctorId", "provinceId"],
-            });
-          } else {
-            //find by location
-            doctorHandbook = await db.Doctor_Infor.findAll({
-              where: {
-                handbookId: inputId,
-                provinceId: location,
-              },
-              attributes: ["doctorId", "provinceId"],
-            });
-          }
+          doctorHandbook = await db.Doctor_Infor.findAll({
+            where: {
+              handbookId: inputId,
+            },
+            attributes: ["doctorId", "provinceId"],
+          });
+
           data.doctorHandbook = doctorHandbook;
         } else data = {};
         resolve({
