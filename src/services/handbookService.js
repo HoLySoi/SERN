@@ -67,22 +67,22 @@ let getDetailHandbookById = (inputId) => {
           },
           attributes: [
             "name",
-            "address",
+            // "image",
             "descriptionHTML",
             "descriptionMarkdown",
           ],
         });
-        if (data) {
-          let doctorHandbook = [];
-          doctorHandbook = await db.Doctor_Infor.findAll({
-            where: {
-              handbookId: inputId,
-            },
-            attributes: ["doctorId", "provinceId"],
-          });
+        // if (data) {
+        //   let doctorHandbook = [];
+        //   doctorHandbook = await db.Doctor_Infor.findAll({
+        //     where: {
+        //       handbookId: inputId,
+        //     },
+        //     attributes: ["doctorId", "provinceId"],
+        //   });
 
-          data.doctorHandbook = doctorHandbook;
-        } else data = {};
+        //   data.doctorHandbook = doctorHandbook;
+        // } else data = {};
         resolve({
           errCode: 0,
           errMessage: "OKE",
