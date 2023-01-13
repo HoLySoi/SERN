@@ -119,10 +119,56 @@ let deleteClinic = (clinicId) => {
     });
   });
 };
+let updateClinicData = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.id ||
+        !data.name ||
+        !data.address ||
+        !data.descriptionHTML ||
+        !data.descriptionMarkdown
+      ) {
+        resolve({
+          errCode: 2,
+          errMessage: "Missing required parameters",
+        });
+      }
+      let clinic = await db.Clinic.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (clinic) {
+        clinic.name = data.name;
+        clinic.address = data.address;
+        clinic.descriptionHTML = data.descriptionHTML;
+        clinic.descriptionMarkdown = data.descriptionMarkdown;
 
+        if (data.imageBase64) {
+          clinic.imageBase64 = data.imageBase64;
+        }
+
+        await clinic.save();
+
+        resolve({
+          errCode: 0,
+          errMessage: "Update the clinic succeeds",
+        });
+      } else {
+        resolve({
+          errCode: 1,
+          errMessage: "Clinic is not found",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 module.exports = {
   createClinic: createClinic,
   getAllClinic: getAllClinic,
   getDetailClinicById: getDetailClinicById,
   deleteClinic: deleteClinic,
+  updateClinicData: updateClinicData,
 };

@@ -116,9 +116,55 @@ let deleteHandbook = (handbookId) => {
     });
   });
 };
+
+let updateHandbookData = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.id ||
+        !data.name ||
+        !data.descriptionHTML ||
+        !data.descriptionMarkdown
+      ) {
+        resolve({
+          errCode: 2,
+          errMessage: "Missing required parameters",
+        });
+      }
+      let handbook = await db.Handbook.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (handbook) {
+        handbook.name = data.name;
+        handbook.descriptionHTML = data.descriptionHTML;
+        handbook.descriptionMarkdown = data.descriptionMarkdown;
+
+        if (data.imageBase64) {
+          handbook.imageBase64 = data.imageBase64;
+        }
+
+        await handbook.save();
+
+        resolve({
+          errCode: 0,
+          errMessage: "Update the handbook succeeds",
+        });
+      } else {
+        resolve({
+          errCode: 1,
+          errMessage: "Handbook is not found",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 module.exports = {
   createHandbook: createHandbook,
   getAllHandbook: getAllHandbook,
   getDetailHandbookById: getDetailHandbookById,
   deleteHandbook: deleteHandbook,
+  updateHandbookData: updateHandbookData,
 };

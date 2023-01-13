@@ -119,9 +119,54 @@ let deleteSpecialty = (specialtyId) => {
     });
   });
 };
+let updateSpecialtyData = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.id ||
+        !data.name ||
+        !data.descriptionHTML ||
+        !data.descriptionMarkdown
+      ) {
+        resolve({
+          errCode: 2,
+          errMessage: "Missing required parameters",
+        });
+      }
+      let specialty = await db.Specialty.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+      if (specialty) {
+        specialty.name = data.name;
+        specialty.descriptionHTML = data.descriptionHTML;
+        specialty.descriptionMarkdown = data.descriptionMarkdown;
+
+        if (data.imageBase64) {
+          specialty.imageBase64 = data.imageBase64;
+        }
+
+        await specialty.save();
+
+        resolve({
+          errCode: 0,
+          errMessage: "Update the specialty succeeds",
+        });
+      } else {
+        resolve({
+          errCode: 1,
+          errMessage: "Specialty is not found",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 module.exports = {
   createSpecialty: createSpecialty,
   getAllSpecialty: getAllSpecialty,
   getDetailSpecialtyById: getDetailSpecialtyById,
   deleteSpecialty: deleteSpecialty,
+  updateSpecialtyData: updateSpecialtyData,
 };

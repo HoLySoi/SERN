@@ -53,10 +53,15 @@ let handleDeleteClinic = async (req, res) => {
   let message = await clinicService.deleteClinic(req.body.id);
   return res.status(200).json(message);
 };
-
+let handleEditClinic = async (req, res) => {
+  let data = req.body;
+  let message = await clinicService.updateClinicData(data);
+  return res.status(200).json(message);
+};
 module.exports = {
   createClinic: createClinic,
   getAllClinic: getAllClinic,
   getDetailClinicById: getDetailClinicById,
   handleDeleteClinic: handleDeleteClinic,
+  handleEditClinic: handleEditClinic,
 };

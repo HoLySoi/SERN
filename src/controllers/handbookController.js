@@ -54,9 +54,16 @@ let handleDeleteHandbook = async (req, res) => {
   return res.status(200).json(message);
 };
 
+let handleEditHandbook = async (req, res) => {
+  let data = req.body;
+  let message = await handbookService.updateHandbookData(data);
+  return res.status(200).json(message);
+};
+
 module.exports = {
   createHandbook: createHandbook,
   getAllHandbook: getAllHandbook,
   getDetailHandbookById: getDetailHandbookById,
   handleDeleteHandbook: handleDeleteHandbook,
+  handleEditHandbook: handleEditHandbook,
 };
