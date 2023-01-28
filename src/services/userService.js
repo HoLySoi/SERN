@@ -41,7 +41,7 @@ let handleUserLogin = (email, password) => {
             userData.user = user;
           } else {
             userData.errCode = 3;
-            userData.errMessage = "wrong password";
+            userData.errMessage = "Wrong password";
           }
         } else {
           userData.errCode = 2;
@@ -49,7 +49,7 @@ let handleUserLogin = (email, password) => {
         }
       } else {
         userData.errCode = 1;
-        userData.errMessage = "email isnt exist. plz try other email";
+        userData.errMessage = "Email does not exist. Please try another email";
       }
 
       resolve(userData);
