@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models");
 
 let createSpecialty = (data) => {
@@ -31,10 +32,18 @@ let createSpecialty = (data) => {
   });
 };
 
-let getAllSpecialty = () => {
+let getAllSpecialty = (limit = 0, offset = 0, filter = "") => {
   return new Promise(async (resolve, reject) => {
     try {
-      let data = await db.Specialty.findAll({});
+      let data = await db.Specialty.findAll({
+        limit,
+        offset,
+        where: {
+          name: {
+            [Op.substring]: filter,
+          },
+        },
+      });
       if (data && data.length > 0) {
         data.map((item) => {
           item.image = new Buffer(item.image, "base64").toString("binary");

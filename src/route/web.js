@@ -18,6 +18,7 @@ let initWebRoutes = (app) => {
   router.get("/edit-crud", homeController.getEditCRUD);
   router.post("/put-crud", homeController.putCRUD);
   router.get("/delete-crud", homeController.deleteCRUD);
+  router.get("/searchAll", homeController.searchAll);
 
   //userController
   router.post("/api/login", userController.handleLogin);
@@ -53,6 +54,7 @@ let initWebRoutes = (app) => {
     doctorController.getListPatientForDoctor
   );
   router.post("/api/send-remedy", doctorController.sendRemedy);
+  router.get("/api/doctors-schedule", doctorController.doctorsSchedule);
 
   //patientController
   router.post(

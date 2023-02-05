@@ -14,8 +14,9 @@ let createClinic = async (req, res) => {
 };
 
 let getAllClinic = async (req, res) => {
+  const { limit, offset, filter } = req.query;
   try {
-    let infor = await clinicService.getAllClinic();
+    let infor = await clinicService.getAllClinic(+limit, +offset, filter);
     return res.status(200).json(infor);
   } catch (error) {
     console.log(error);

@@ -1,16 +1,22 @@
 import doctorService from "../services/doctorService";
 
 let getTopDoctorHome = async (req, res) => {
-  let limit = req.query.limit;
-  if (!limit) limit = 10;
+  let limit = req.query.limit || 10;
+  let offset = req.query.offset || 0;
+  let filter = req.query.filter || "";
   try {
-    let response = await doctorService.getTopDoctorHome(+limit);
+    let response = await doctorService.getTopDoctorHome(
+      +limit,
+      +offset,
+      filter
+    );
     return res.status(200).json(response);
   } catch (error) {
     console.log(error);
     return res.status(200).json({
       errCode: -1,
       message: "Error from server...",
+      req: error,
     });
   }
 };
@@ -24,6 +30,20 @@ let getAllDoctors = async (req, res) => {
     return res.status(200).json({
       errCode: -1,
       message: "Error from server...",
+    });
+  }
+};
+
+let doctorsSchedule = async (req, res) => {
+  try {
+    let doctors = await doctorService.getDoctorsSchedule();
+    return res.status(200).json(doctors);
+  } catch (error) {
+    console.log("lôi xay ra " + error);
+    return res.status(400).json({
+      errCode: -1,
+      message: "Error from server...",
+      mes: error,
     });
   }
 };
@@ -148,4 +168,5 @@ module.exports = {
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
   sendRemedy: sendRemedy,
+  doctorsSchedule: doctorsSchedule,
 };

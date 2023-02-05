@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const db = require("../models");
 
 let createClinic = (data) => {
@@ -33,10 +34,18 @@ let createClinic = (data) => {
   });
 };
 
-let getAllClinic = () => {
+let getAllClinic = (limit, offset, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let data = await db.Clinic.findAll({});
+      let data = await db.Clinic.findAll({
+        limit,
+        offset,
+        where: {
+          name: {
+            [Op.substring]: filter,
+          },
+        },
+      });
 
       if (data && data.length > 0) {
         data.map((item) => {

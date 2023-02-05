@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import { Op } from "sequelize";
 import db from "../models/index";
 
 const salt = bcrypt.genSaltSync(10);
@@ -106,10 +107,125 @@ let deleteUserById = (userId) => {
   });
 };
 
+let searchAll = async (search = "") => {
+  console.log(search);
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data = {
+        clinic: [],
+        specialty: [],
+        doctor: [],
+        // handbook: [],
+      };
+
+      // clinic
+      const clinic = await db.Clinic.findAll({
+        attributes: ["name", "image", "id"],
+        where: {
+          name: {
+            [Op.substring]: search,
+          },
+        },
+      });
+
+      if (clinic && clinic.length > 0) {
+        clinic.map((item) => {
+          item.image = new Buffer(item.image, "base64").toString("binary");
+          return item;
+        });
+      }
+
+      //specialties
+      const specialty = await db.Specialty.findAll({
+        attributes: ["name", "image", "id"],
+        where: {
+          name: {
+            [Op.substring]: search,
+          },
+        },
+      });
+
+      if (specialty && specialty.length > 0) {
+        specialty.map((item) => {
+          item.image = new Buffer(item.image, "base64").toString("binary");
+          return item;
+        });
+      }
+
+      // doctor
+      const doctor = await db.User.findAll({
+        attributes: ["firstName", "lastName", "image", "id"],
+        where: {
+          roleId: "R2",
+          [Op.or]: [
+            {
+              firstName: {
+                [Op.substring]: search,
+              },
+            },
+            {
+              lastName: {
+                [Op.substring]: search,
+              },
+            },
+          ],
+        },
+        include: [
+          {
+            model: db.Allcode,
+            as: "positionData",
+            attributes: ["valueEn", "valueVi"],
+          },
+        ],
+        raw: true,
+        nest: true,
+      });
+
+      if (doctor && doctor.length > 0) {
+        doctor.map((item) => {
+          item.image = new Buffer(item.image, "base64").toString("binary");
+          return item;
+        });
+      }
+
+      // handbook
+      // const handbook = await db.Handbook.findAll({
+      //   attributes: ["name", "image"],
+      //   where: {
+      //     name: {
+      //       [Op.substring]: search,
+      //     },
+      //   },
+      // });
+
+      // if (handbook && handbook.length > 0) {
+      //   handbook.map((item) => {
+      //     item.image = new Buffer(item.image, "base64").toString("binary");
+      //     return item;
+      //   });
+      // }
+
+      data.clinic = clinic;
+      data.specialty = specialty;
+      data.doctor = doctor;
+      // data.handbook = handbook;
+
+      resolve({
+        errCode: 0,
+        errMessage: "OKE",
+        data,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   createNewUser: createNewUser,
   getAllUser: getAllUser,
   getUserInfoById: getUserInfoById,
   updateUserData: updateUserData,
   deleteUserById: deleteUserById,
+  searchAll: searchAll,
 };

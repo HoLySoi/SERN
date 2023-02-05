@@ -57,6 +57,21 @@ let deleteCRUD = async (req, res) => {
     return res.send("User not found");
   }
 };
+
+let searchAll = async (req, res) => {
+  const search = req?.query?.search || "";
+  try {
+    let infor = await CRUDService.searchAll(search);
+    return res.status(200).json(infor);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      errCode: -1,
+      errMessage: " Error from the server",
+    });
+  }
+};
+
 module.exports = {
   getHomePage: getHomePage,
   getCRUD: getCRUD,
@@ -65,4 +80,5 @@ module.exports = {
   getEditCRUD: getEditCRUD,
   putCRUD: putCRUD,
   deleteCRUD: deleteCRUD,
+  searchAll: searchAll,
 };

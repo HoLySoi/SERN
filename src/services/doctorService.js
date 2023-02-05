@@ -2,15 +2,31 @@ import db from "../models/index";
 require("dotenv").config();
 import _ from "lodash";
 import emailService from "../services/emailService";
+import { Op } from "sequelize";
 
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 
-let getTopDoctorHome = (limitInput) => {
+let getTopDoctorHome = (limitInput, offset, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
       let users = await db.User.findAll({
         limit: limitInput,
-        where: { roleId: "R2" },
+        offset,
+        where: {
+          roleId: "R2",
+          [Op.or]: [
+            {
+              firstName: {
+                [Op.substring]: filter,
+              },
+            },
+            {
+              lastName: {
+                [Op.substring]: filter,
+              },
+            },
+          ],
+        },
         order: [["createdAt", "DESC"]],
         attributes: {
           exclude: ["password"],
@@ -49,6 +65,33 @@ let getAllDoctors = () => {
         attributes: {
           exclude: ["password", "image"],
         },
+      });
+
+      resolve({
+        errCode: 0,
+        data: doctors,
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+let getDoctorsSchedule = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let doctors = await db.User.findAll({
+        where: { roleId: "R2" },
+        attributes: ["id", "firstName", "lastName"],
+        include: [
+          {
+            model: db.Schedule,
+            as: "doctorData",
+            attributes: ["date", "timeType"],
+          },
+        ],
+        raw: false,
+        nest: true,
       });
 
       resolve({
@@ -538,4 +581,5 @@ module.exports = {
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
   sendRemedy: sendRemedy,
+  getDoctorsSchedule: getDoctorsSchedule,
 };
