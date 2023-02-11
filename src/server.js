@@ -1,9 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 // import viewEngine from "./config/viewEngine";
+// import initWebRoutes from "./config/connectDB";
+// import connectDB from "./config/connectDB";
 const viewEngine = require("./config/viewEngine");
-import initWebRoutes from "./route/web";
-import connectDB from "./config/connectDB";
+const initWebRoutes = require("./route/web");
+const connectDB = require("./route/web");
 // import cors from "cors";
 require("dotenv").config();
 
