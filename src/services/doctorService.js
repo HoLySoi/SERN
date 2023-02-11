@@ -6,6 +6,7 @@ import { Op } from "sequelize";
 
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 
+//Lấy danh sách tìm kiếm bác sĩ
 let getTopDoctorHome = (limitInput, offset, filter) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -57,6 +58,7 @@ let getTopDoctorHome = (limitInput, offset, filter) => {
   });
 };
 
+//Lấy tất cả bác sĩ
 let getAllDoctors = () => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -77,6 +79,7 @@ let getAllDoctors = () => {
   });
 };
 
+//Lấy kế hoạch của bác sĩ
 let getDoctorsSchedule = () => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -104,6 +107,7 @@ let getDoctorsSchedule = () => {
   });
 };
 
+//Kiểm tra trường trống
 let checkRequiredFields = (inputData) => {
   let arrFields = [
     "doctorId",
@@ -133,6 +137,7 @@ let checkRequiredFields = (inputData) => {
   };
 };
 
+//Tạo, sửa thông tin bác sĩ
 let saveDetailInforDoctors = (inputData) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -211,6 +216,7 @@ let saveDetailInforDoctors = (inputData) => {
   });
 };
 
+//Lấy thông tin bác sĩ theo ID
 let getDetailDoctorById = (inputId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -279,6 +285,7 @@ let getDetailDoctorById = (inputId) => {
   });
 };
 
+//Tạo nhiều kế hoạch khám bệnh
 let bulkCreateSchedule = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -322,6 +329,7 @@ let bulkCreateSchedule = (data) => {
   });
 };
 
+//Láy kế hoạch khám bệnh theo ngày
 let getScheduleByDate = (doctorId, date) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -365,6 +373,7 @@ let getScheduleByDate = (doctorId, date) => {
   });
 };
 
+//Lấy thêm thông tin bác sĩ theo ID
 let getExtraInforDoctorById = (inputId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -413,6 +422,7 @@ let getExtraInforDoctorById = (inputId) => {
   });
 };
 
+//Lấy thông tin bác sĩ theo ID (Hiển thị tại phòng khám)
 let getProfileDoctorById = (inputId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -481,6 +491,7 @@ let getProfileDoctorById = (inputId) => {
   });
 };
 
+//Lấy danh sách bệnh nhân
 let getListPatientForDoctor = (doctorId, date) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -525,6 +536,7 @@ let getListPatientForDoctor = (doctorId, date) => {
   });
 };
 
+//Gửi hóa đơn
 let sendRemedy = (data) => {
   return new Promise(async (resolve, reject) => {
     try {

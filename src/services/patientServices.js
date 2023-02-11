@@ -7,7 +7,7 @@ let buildUrlEmail = (doctorId, token) => {
   let result = `${process.env.URL_REACT}/verify-booking?token=${token}&doctorId=${doctorId}`;
   return result;
 };
-
+//Đặt lịch hẹn
 let postBookAppointment = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -72,6 +72,7 @@ let postBookAppointment = (data) => {
   });
 };
 
+//Xác nhận email
 let postVerifyBookAppointment = (data) => {
   return new Promise(async (resolve, reject) => {
     try {

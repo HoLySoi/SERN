@@ -2,7 +2,7 @@ import db from "../models/index";
 import bcrypt from "bcryptjs";
 
 const salt = bcrypt.genSaltSync(10);
-
+//Băm password
 let hashUserPassword = (password) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -14,6 +14,7 @@ let hashUserPassword = (password) => {
   });
 };
 
+//Đăng nhập và kiểm tra đăng nhập
 let handleUserLogin = (email, password) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -59,6 +60,7 @@ let handleUserLogin = (email, password) => {
   });
 };
 
+//Kiểm tra Email của người dùng
 let checkUserEmail = (userEmail) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -77,6 +79,7 @@ let checkUserEmail = (userEmail) => {
   });
 };
 
+//Lấy tất cả người dùng
 let getAllUsers = (userId) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -105,6 +108,7 @@ let getAllUsers = (userId) => {
   });
 };
 
+//Tạo người dùng mới
 let createNewUser = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -139,6 +143,7 @@ let createNewUser = (data) => {
   });
 };
 
+//Xóa thông tin người dùng
 let deleteUser = (userId) => {
   return new Promise(async (resolve, reject) => {
     let foundUser = await db.User.findOne({
@@ -161,6 +166,7 @@ let deleteUser = (userId) => {
   });
 };
 
+//Sửa thông tin người dùng
 let updateUserData = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -204,6 +210,7 @@ let updateUserData = (data) => {
   });
 };
 
+//Lấy thông tin ở bảng allcode
 let getAllCodeService = (typeInput) => {
   return new Promise(async (resolve, reject) => {
     try {
