@@ -1,4 +1,4 @@
-import specialtyService from "../services/specialtyService";
+const specialtyService = require("../services/specialtyService");
 
 let createSpecialty = async (req, res) => {
   try {

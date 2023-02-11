@@ -1,4 +1,4 @@
-import handbookService from "../services/handbookService";
+const handbookService = require("../services/handbookService");
 
 let createHandbook = async (req, res) => {
   try {

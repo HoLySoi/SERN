@@ -1,5 +1,5 @@
-import db from "../models/index";
-import bcrypt from "bcryptjs";
+const db = require("../models/index");
+const bcrypt = require("bcryptjs");
 
 const salt = bcrypt.genSaltSync(10);
 //Băm password

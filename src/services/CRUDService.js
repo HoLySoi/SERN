@@ -1,6 +1,6 @@
-import bcrypt from "bcryptjs";
-import { Op } from "sequelize";
-import db from "../models/index";
+const bcrypt = require("bcryptjs");
+const { Op } = require("sequelize");
+const db = require("../models/index");
 
 const salt = bcrypt.genSaltSync(10);
 

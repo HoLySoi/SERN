@@ -1,8 +1,8 @@
-import db from "../models/index";
+const db = require("../models/index");
 require("dotenv").config();
-import _ from "lodash";
-import emailService from "../services/emailService";
-import { Op } from "sequelize";
+const _ = require("lodash");
+const emailService = require("../services/emailService");
+const { Op } = require("sequelize");
 
 const MAX_NUMBER_SCHEDULE = process.env.MAX_NUMBER_SCHEDULE;
 

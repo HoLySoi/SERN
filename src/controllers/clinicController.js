@@ -1,4 +1,4 @@
-import clinicService from "../services/clinicService";
+const clinicService = require("../services/clinicService");
 
 let createClinic = async (req, res) => {
   try {

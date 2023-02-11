@@ -1,11 +1,11 @@
-import express from "express";
-import homeController from "../controllers/homeController";
-import userController from "../controllers/userController";
-import doctorController from "../controllers/doctorController";
-import patientController from "../controllers/patientController";
-import specialtyController from "../controllers/specialtyController";
-import clinicController from "../controllers/clinicController";
-import handbookController from "../controllers/handbookController";
+const express = require("express");
+const homeController = require("../controllers/homeController");
+const userController = require("../controllers/userController");
+const doctorController = require("../controllers/doctorController");
+const patientController = require("../controllers/patientController");
+const specialtyController = require("../controllers/specialtyController");
+const clinicController = require("../controllers/clinicController");
+const handbookController = require("../controllers/handbookController");
 
 let router = express.Router();
 
@@ -101,7 +101,7 @@ let initWebRoutes = (app) => {
     handbookController.handleDeleteHandbook
   );
   router.put("/api/edit-handbook", handbookController.handleEditHandbook);
-
+  if (!app) return;
   return app.use("/", router);
 };
 

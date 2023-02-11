@@ -1,7 +1,7 @@
-import db from "../models/index";
+const db = require("../models/index");
 require("dotenv").config();
-import emailService from "./emailService";
-import { v4 as uuidv4 } from "uuid";
+const emailService = require("./emailService");
+const { v4: uuidv4 } = require("uuid");
 
 let buildUrlEmail = (doctorId, token) => {
   let result = `${process.env.URL_REACT}/verify-booking?token=${token}&doctorId=${doctorId}`;

@@ -1,4 +1,4 @@
-import doctorService from "../services/doctorService";
+const doctorService = require("../services/doctorService");
 
 let getTopDoctorHome = async (req, res) => {
   let limit = req.query.limit || 10;
