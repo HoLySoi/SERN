@@ -1,9 +1,8 @@
-// import express from "express";
+import express from "express";
 import bodyParser from "body-parser";
 // import viewEngine from "./config/viewEngine";
 // import initWebRoutes from "./config/connectDB";
 // import connectDB from "./config/connectDB";
-const express = require("express");
 const viewEngine = require("./config/viewEngine");
 const initWebRoutes = require("./route/web");
 const connectDB = require("./route/web");
