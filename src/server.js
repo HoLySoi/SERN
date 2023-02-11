@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
-import viewEngine from "./config/viewEngine";
+// import viewEngine from "./config/viewEngine";
+const viewEngine = require("./config/viewEngine");
 import initWebRoutes from "./route/web";
 import connectDB from "./config/connectDB";
 // import cors from "cors";
