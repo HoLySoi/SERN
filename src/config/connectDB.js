@@ -1,10 +1,11 @@
 const { Sequelize } = require("sequelize");
+const dbConfig = require("../config/db.config.js");
 
 // Option 3: Passing parameters separately (other dialects)
-const sequelize = new Sequelize("testconect", "root", null, {
-  host: "localhost",
-  dialect: "mysql",
-  logging: false,
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  logging: true,
 });
 
 let connectDB = async () => {

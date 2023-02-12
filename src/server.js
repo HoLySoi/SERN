@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const viewEngine = require("./config/viewEngine");
 const initWebRoutes = require("./route/web");
-const connectDB = require("./route/web");
+const connectDB = require("./config/connectDB");
 // import cors from "cors";
 require("dotenv").config();
 
