@@ -21,7 +21,7 @@
   "production": {
     "username": "admin",
     "password": "123456aA",
-    "database": "doctor-schedule",
+    "database": "bookingcare",
     "host": "doctor-schedule.cmkcd7niwlap.ap-southeast-1.rds.amazonaws.com",
     "dialect": "mysql"
   }
