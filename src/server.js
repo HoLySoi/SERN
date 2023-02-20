@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const viewEngine = require("./config/viewEngine");
 const initWebRoutes = require("./route/web");
 const connectDB = require("./config/connectDB");
+const cors = require("cors")
 // import cors from "cors";
 require("dotenv").config();
 
@@ -33,7 +34,9 @@ app.use(function (req, res, next) {
   // Pass to next layer of middleware
   next();
 });
-
+app.use(
+  cors({ origin: ["https://booking-care.netlify.app", 'http://127.0.0.1:3000'] })
+);
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ limit: "50mb" }));
