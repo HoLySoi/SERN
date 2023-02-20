@@ -1,5 +1,6 @@
 const db = require("../models/index");
 const bcrypt = require("bcryptjs");
+const { jwtSign } = require("../helper/jwt");
 
 const salt = bcrypt.genSaltSync(10);
 //Băm password
@@ -27,7 +28,6 @@ let handleUserLogin = (email, password) => {
             "id",
             "email",
             "roleId",
-            "password",
             "firstName",
             "lastName",
           ],
@@ -35,15 +35,11 @@ let handleUserLogin = (email, password) => {
           raw: true,
         });
         if (user) {
-          let check = await bcrypt.compareSync(password, user.password);
-          if (check) {
-            userData.errCode = 0;
-            userData.errMessage = "OK";
-            userData.user = user;
-          } else {
-            userData.errCode = 3;
-            userData.errMessage = "Wrong password";
-          }
+          const token = jwtSign(user);
+          user.token = token;
+          userData.errCode = 0;
+          userData.errMessage = "OK";
+          userData.user = user;
         } else {
           userData.errCode = 2;
           userData.errMessage = "User not found";

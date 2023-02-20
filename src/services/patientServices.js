@@ -3,7 +3,8 @@ require("dotenv").config();
 const emailService = require("./emailService");
 const { v4: uuidv4 } = require("uuid");
 
-let buildUrlEmail = (doctorId, token) => {
+let buildUrlEmail = (doctorId, token = "") => {
+  if (!token) return `${process.env.URL_REACT}/detail-doctor/${doctorId}`;
   let result = `${process.env.URL_REACT}/verify-booking?token=${token}&doctorId=${doctorId}`;
   return result;
 };
@@ -112,7 +113,57 @@ let postVerifyBookAppointment = (data) => {
   });
 };
 
+let cancelBookAppointment = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.email ||
+        !data.fullName ||
+        !data.timeString ||
+        !data.doctorName ||
+        !data.reason ||
+        !data.doctorId
+      ) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing parameter!",
+        });
+      } else {
+        let user = await db.User.findOne({
+          where: { email: data.email },
+        });
+        //create a booking record
+        if (user) {
+          const booking = await db.Booking.findOne({
+            where: { patientId: user.id, statusId: "S2", timeType: data.timeType, date: data.date },
+          });
+          booking.statusId = "S4"
+          await booking.save();
+        }
+
+        await emailService.sendCancelBookingEmail({
+          reciverEmail: data.email,
+          patientName: data.fullName,
+          time: data.timeString,
+          doctorName: data.doctorName,
+          language: data.language,
+          reason: data.reason,
+          redirectLink: buildUrlEmail(data.doctorId),
+        });
+
+        resolve({
+          errCode: 0,
+          errMessage: "Cancel succeed",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   postBookAppointment: postBookAppointment,
   postVerifyBookAppointment: postVerifyBookAppointment,
+  cancelBookAppointment: cancelBookAppointment,
 };

@@ -80,11 +80,24 @@ let getAllDoctors = () => {
 };
 
 //Lấy kế hoạch của bác sĩ
-let getDoctorsSchedule = () => {
+let getDoctorsSchedule = (auth) => {
+  const { id, roleId } = auth;
   return new Promise(async (resolve, reject) => {
     try {
+      const where = {}
+      if (roleId !== "R1" && roleId !== "R2") {
+        resolve({
+          errCode: 1,
+          errMessage: "Bạn không có quyền truy cập chức năng này"
+        })
+      }
+      if (roleId === "R1") {
+        where.roleId = "R2"
+      } else {
+        where.id = id
+      }
       let doctors = await db.User.findAll({
-        where: { roleId: "R2" },
+        where: where,
         attributes: ["id", "firstName", "lastName"],
         include: [
           {
@@ -96,7 +109,6 @@ let getDoctorsSchedule = () => {
         raw: false,
         nest: true,
       });
-
       resolve({
         errCode: 0,
         data: doctors,
@@ -502,7 +514,13 @@ let getListPatientForDoctor = (doctorId, date) => {
         });
       } else {
         let data = await db.Booking.findAll({
-          where: { statusId: "S2", doctorId: doctorId, date: date },
+          where: {
+            statusId: {
+              [Op.not]: "S1"
+            },
+            doctorId: doctorId,
+            date: date
+          },
           include: [
             {
               model: db.User,

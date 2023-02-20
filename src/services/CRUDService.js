@@ -108,7 +108,6 @@ let deleteUserById = (userId) => {
 };
 
 let searchAll = async (search = "") => {
-  console.log(search);
   return new Promise(async (resolve, reject) => {
     try {
       const data = {

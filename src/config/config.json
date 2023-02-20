@@ -23,6 +23,7 @@
     "password": "123456aA",
     "database": "bookingcare",
     "host": "doctor-schedule.cmkcd7niwlap.ap-southeast-1.rds.amazonaws.com",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "logging": false
   }
 }

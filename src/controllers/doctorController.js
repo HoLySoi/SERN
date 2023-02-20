@@ -1,3 +1,4 @@
+const { getAuthentication } = require("../helper/jwt");
 const doctorService = require("../services/doctorService");
 
 let getTopDoctorHome = async (req, res) => {
@@ -36,7 +37,7 @@ let getAllDoctors = async (req, res) => {
 
 let doctorsSchedule = async (req, res) => {
   try {
-    let doctors = await doctorService.getDoctorsSchedule();
+    let doctors = await doctorService.getDoctorsSchedule(getAuthentication(req));
     return res.status(200).json(doctors);
   } catch (error) {
     console.log("lôi xay ra " + error);
