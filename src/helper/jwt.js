@@ -23,7 +23,7 @@ const getAuthentication = (req) => {
     return jwt.verify(code, secret);
 }
 
-module.export = {
+module.exports = {
     jwtSign,
     jwtDecode,
     getAuthentication
