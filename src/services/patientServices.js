@@ -19,6 +19,7 @@ let postBookAppointment = (data) => {
         !data.date ||
         !data.fullName ||
         !data.selectedGender ||
+        !data.phoneNumber ||
         !data.address
       ) {
         resolve({
@@ -43,6 +44,7 @@ let postBookAppointment = (data) => {
             email: data.email,
             roleId: "R3",
             gender: data.selectedGender,
+            phonenumber: data.phoneNumber,
             address: data.address,
             firstName: data.fullName,
           },
@@ -135,9 +137,14 @@ let cancelBookAppointment = (data) => {
         //create a booking record
         if (user) {
           const booking = await db.Booking.findOne({
-            where: { patientId: user.id, statusId: "S2", timeType: data.timeType, date: data.date },
+            where: {
+              patientId: user.id,
+              statusId: "S2",
+              timeType: data.timeType,
+              date: data.date,
+            },
           });
-          booking.statusId = "S4"
+          booking.statusId = "S4";
           await booking.save();
         }
 
