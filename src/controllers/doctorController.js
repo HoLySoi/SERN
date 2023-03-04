@@ -37,7 +37,9 @@ let getAllDoctors = async (req, res) => {
 
 let doctorsSchedule = async (req, res) => {
   try {
-    let doctors = await doctorService.getDoctorsSchedule(getAuthentication(req));
+    let doctors = await doctorService.getDoctorsSchedule(
+      getAuthentication(req)
+    );
     return res.status(200).json(doctors);
   } catch (error) {
     console.log("lôi xay ra " + error);
@@ -158,6 +160,19 @@ let sendRemedy = async (req, res) => {
     });
   }
 };
+
+let cancelBookAppointment = async (req, res) => {
+  try {
+    let infor = await doctorService.cancelBookAppointment(req.body);
+    return res.status(200).json(infor);
+  } catch (e) {
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Error from the server",
+    });
+  }
+};
+
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
@@ -170,4 +185,5 @@ module.exports = {
   getListPatientForDoctor: getListPatientForDoctor,
   sendRemedy: sendRemedy,
   doctorsSchedule: doctorsSchedule,
+  cancelBookAppointment: cancelBookAppointment,
 };

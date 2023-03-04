@@ -101,8 +101,9 @@ let sendAttachment = async (dataSend) => {
         html: getBodyHTMLEmailRemedy(dataSend),
         attachments: [
           {
-            filename: `remedy-${dataSend.patientId
-              }-${new Date().getTime()}.png`,
+            filename: `remedy-${
+              dataSend.patientId
+            }-${new Date().getTime()}.png`,
             content: dataSend.imgBase64.split("base64,")[1],
             encoding: "base64",
           },
@@ -142,15 +143,12 @@ let getCancelBookingEmail = (dataSend) => {
   if (dataSend.language === "vi") {
     result = `
     <h3>Xin chào ${dataSend.patientName}!</h3> 
-    <p>Yêu cầu đặt lịch của bạn đã bị từ chối.</p>
-    <p>Thông tin đặt lịch khám bệnh: </p>
+    <p>Yêu cầu đặt lịch của bạn đã bị từ chối hủy với thông tin như bên dưới.</p>
+    <p>Thông tin: </p>
     <div><b>Thời gian ${dataSend.time} </b></div> 
     <div><b>Bác sĩ: ${dataSend.doctorName} </b></div> 
     <div><b>Lý do: ${dataSend.reason} </b></div> 
-    <p>Click vào đường link bên dưới để có thể đặt lịch khám khác.</p>
-    <div> 
-    <a href= ${dataSend.redirectLink} target="_blank" >Click here</a> 
-    </div> 
+
     <div> Xin chân thành cảm ơn!</div>
     `;
   }
@@ -158,15 +156,12 @@ let getCancelBookingEmail = (dataSend) => {
   if (dataSend.language === "en") {
     result = `
     <h3>Dear ${dataSend.patientName}!</h3> 
-    <p>Your booking request has been declined</p>
-    <p>Information to book a medical appointment: </p>
+    <p>Your booking request has been denied and canceled with the information as below.</p>
+    <p>Information: </p>
     <div><b>Time ${dataSend.time} </b></div> 
     <div><b>Doctor: ${dataSend.doctorName} </b></div> 
     <div><b>Reason: ${dataSend.reason} </b></div> 
-    <p>Click on the link below to schedule another appointment.</p>
-    <div> 
-    <a href= ${dataSend.redirectLink} target="_blank" >Click here</a> 
-    </div> 
+ 
     <div> Sincerely thank!</div>
     `;
   }
