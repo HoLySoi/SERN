@@ -19,6 +19,7 @@ let postBookAppointment = (data) => {
         !data.date ||
         !data.fullName ||
         !data.selectedGender ||
+        !data.phoneNumber ||
         !data.address
       ) {
         resolve({
@@ -43,6 +44,7 @@ let postBookAppointment = (data) => {
             email: data.email,
             roleId: "R3",
             gender: data.selectedGender,
+            phonenumber: data.phoneNumber,
             address: data.address,
             firstName: data.fullName,
           },
@@ -113,57 +115,7 @@ let postVerifyBookAppointment = (data) => {
   });
 };
 
-let cancelBookAppointment = (data) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      if (
-        !data.email ||
-        !data.fullName ||
-        !data.timeString ||
-        !data.doctorName ||
-        !data.reason ||
-        !data.doctorId
-      ) {
-        resolve({
-          errCode: 1,
-          errMessage: "Missing parameter!",
-        });
-      } else {
-        let user = await db.User.findOne({
-          where: { email: data.email },
-        });
-        //create a booking record
-        if (user) {
-          const booking = await db.Booking.findOne({
-            where: { patientId: user.id, statusId: "S2", timeType: data.timeType, date: data.date },
-          });
-          booking.statusId = "S4"
-          await booking.save();
-        }
-
-        await emailService.sendCancelBookingEmail({
-          reciverEmail: data.email,
-          patientName: data.fullName,
-          time: data.timeString,
-          doctorName: data.doctorName,
-          language: data.language,
-          reason: data.reason,
-          redirectLink: buildUrlEmail(data.doctorId),
-        });
-
-        resolve({
-          errCode: 0,
-          errMessage: "Cancel succeed",
-        });
-      }
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
 module.exports = {
   postBookAppointment: postBookAppointment,
   postVerifyBookAppointment: postVerifyBookAppointment,
-  cancelBookAppointment: cancelBookAppointment,
 };

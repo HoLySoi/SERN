@@ -84,17 +84,17 @@ let getDoctorsSchedule = (auth) => {
   const { id, roleId } = auth;
   return new Promise(async (resolve, reject) => {
     try {
-      const where = {}
+      const where = {};
       if (roleId !== "R1" && roleId !== "R2") {
         resolve({
           errCode: 1,
-          errMessage: "Bạn không có quyền truy cập chức năng này"
-        })
+          errMessage: "Bạn không có quyền truy cập chức năng này",
+        });
       }
       if (roleId === "R1") {
-        where.roleId = "R2"
+        where.roleId = "R2";
       } else {
-        where.id = id
+        where.id = id;
       }
       let doctors = await db.User.findAll({
         where: where,
@@ -516,10 +516,10 @@ let getListPatientForDoctor = (doctorId, date) => {
         let data = await db.Booking.findAll({
           where: {
             statusId: {
-              [Op.not]: "S1"
+              [Op.not]: "S1",
             },
             doctorId: doctorId,
-            date: date
+            date: date,
           },
           include: [
             {
@@ -606,6 +606,59 @@ let sendRemedy = (data) => {
   });
 };
 
+let cancelBookAppointment = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (
+        !data.email ||
+        !data.fullName ||
+        !data.doctorName ||
+        !data.reason ||
+        !data.doctorId
+      ) {
+        resolve({
+          errCode: 1,
+          errMessage: "Missing parameter!",
+        });
+      } else {
+        let appointment = await db.Booking.findOne({
+          where: {
+            patientId: data.patientId,
+            timeType: data.timeType,
+            doctorId: data.doctorId,
+            statusId: "S2",
+
+            // date: data.date,
+          },
+
+          raw: false,
+        });
+        if (appointment) {
+          appointment.statusId = "S4";
+          await appointment.save();
+        }
+
+        await emailService.sendCancelBookingEmail({
+          reciverEmail: data.email,
+          patientName: data.fullName,
+          time: data.timeString,
+          doctorName: data.doctorName,
+          language: data.language,
+          reason: data.reason,
+          // redirectLink: buildUrlEmail(data.doctorId),
+        });
+
+        resolve({
+          errCode: 0,
+          errMessage: "Cancel succeed",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   getTopDoctorHome: getTopDoctorHome,
   getAllDoctors: getAllDoctors,
@@ -617,5 +670,6 @@ module.exports = {
   getProfileDoctorById: getProfileDoctorById,
   getListPatientForDoctor: getListPatientForDoctor,
   sendRemedy: sendRemedy,
+  cancelBookAppointment: cancelBookAppointment,
   getDoctorsSchedule: getDoctorsSchedule,
 };

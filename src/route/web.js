@@ -54,6 +54,10 @@ let initWebRoutes = (app) => {
     doctorController.getListPatientForDoctor
   );
   router.post("/api/send-remedy", doctorController.sendRemedy);
+  router.post(
+    "/api/cancel-book-appointment",
+    doctorController.cancelBookAppointment
+  );
   router.get("/api/doctors-schedule", doctorController.doctorsSchedule);
 
   //patientController
@@ -61,10 +65,7 @@ let initWebRoutes = (app) => {
     "/api/patient-book-appointment",
     patientController.postBookAppointment
   );
-  router.post(
-    "/api/cancel-book-appointment",
-    patientController.cancelBookAppointment
-  );
+
   router.post(
     "/api/verify-book-appointment",
     patientController.postVerifyBookAppointment
