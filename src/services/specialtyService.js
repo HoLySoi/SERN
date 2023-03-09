@@ -101,7 +101,6 @@ let getDetailSpecialtyById = (inputId, location) => {
             });
           }
           data.doctorSpecialty = doctorSpecialty;
-          console.log(data)
         } else data = {};
         resolve({
           errCode: 0,
