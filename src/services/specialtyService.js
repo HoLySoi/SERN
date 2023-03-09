@@ -70,13 +70,20 @@ let getDetailSpecialtyById = (inputId, location) => {
           errMessage: "Missing parameter",
         });
       } else {
-        let data = await db.Specialty.findOne({
+        let data = {
+          doctorSpecialty: [],
+          descriptionHTML: "",
+          descriptionMarkdown: ""
+        };
+        const specialty = await db.Specialty.findOne({
           where: {
             id: inputId,
           },
           attributes: ["descriptionHTML", "descriptionMarkdown"],
         });
-        if (data) {
+        if (specialty) {
+          data.descriptionHTML = specialty.descriptionHTML
+          data.descriptionMarkdown = specialty.descriptionMarkdown
           let doctorSpecialty = [];
           if (location === "ALL") {
             doctorSpecialty = await db.Doctor_Infor.findAll({
@@ -94,6 +101,7 @@ let getDetailSpecialtyById = (inputId, location) => {
             });
           }
           data.doctorSpecialty = doctorSpecialty;
+          console.log(data)
         } else data = {};
         resolve({
           errCode: 0,
